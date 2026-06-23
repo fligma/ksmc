@@ -13,23 +13,42 @@ python ksmc.py your_script.ksm
 ---
 
 ## Command Reference
+---
 
-| Command | Syntax | Description |
+| Command | Syntax | How it works |
 | --- | --- | --- |
-| **`>>`** | `... | >>` | **Feed operator**: Pushes the last evaluated value (`last_val`) onto the stack. |
-| **`push`** | `push <type> <val>` | Casts `<val>` to `<type>` (`str`/`int`/`float`/`list`) and pushes it onto the stack. |
-| **`save`** | `save <key>` | Pops the top item off the stack and saves it to the heap under `<key>`. |
-| **`store`** | `store <key>=<val>` | Directly maps a variable in the heap (auto-detects integers). |
-| **`get`** | `get <key>` | Retrieves a value from the heap and holds it in `last_val`. |
-| **`index`** | `index <key> <idx>` | Sets `last_val` to the element at `<idx>` in a heap list/string (casts strings to list). |
-| **`set`** | `set <key> <idx> <v>` | Overwrites the element at `<idx>` in a heap list/string with `<v>`. |
-| **`rand`** | `rand <min> <max>` | Generates a random integer (inclusive) and sets `last_val`. |
-| **`add`** | `add [value]` | Pops `a`. Adds `value` (or pops `b` if omitted). Sets `last_val`. Concatenates strings. |
-| **`sub`** | `sub [value]` | Pops `a`. Subtracts `value` (or pops `b` if omitted). Sets `last_val`. |
-| **`mult`** | `mult [value]` | Pops `a`. Multiplies by `value` (or pops `b`). Sets `last_val`. Replicates strings/lists. |
-| **`ifeq`** | `ifeq <key> <val>` | **Guard clause**: If heap value != `<val>`, skips the rest of the current line. |
-| **`ifgt`** | `ifgt <key> <val>` | **Guard clause**: If heap value <= `<val>`, skips the rest of the current line. |
-| **`jump`** | `jump <label>` | Jumps execution pointer to the line containing `label <label>`. |
-| **`draw`** | `draw <key> <w>` | Clears screen and prints a 1D heap list/string as a 2D grid wrapped at width `<w>`. |
-| **`input`** | `input` | Prompts `Move (wasd): `, converts input to lowercase, and sets `last_val`. |
-| **`print`** | `print [value]` | Prints `value`. If omitted, pops and prints the top item of the stack. |
+| **`>>`** | `... | >>` | Takes the most recently generated result (`last_val`) and pushes it onto the **stack**. |
+| **`push`** | `push <type> <val>` | Converts `<val>` to the requested type (`str`, `int`, `float`, `list`) and places it on top of the **stack**. |
+| **`save`** | `save <key>` | Removes the top item from the **stack** and saves it permanently in the **heap** under the name `<key>`. |
+| **`store`** | `store <key>=<val>` | Directly saves `<val>` into the **heap** without using the stack. (Auto-detects integers). |
+| **`get`** | `get <key>` | Looks up `<key>` in the **heap** and holds its value in `last_val`. |
+| **`index`** | `index <key> <idx>` | Finds the item at position `<idx>` inside a list/string in the **heap**, holding the result in `last_val`. |
+| **`set`** | `set <key> <idx> <v>` | Overwrites the item at position `<idx>` inside a **heap** list/string with `<v>`. |
+| **`rand`** | `rand <min> <max>` | Generates a random integer and holds it in `last_val`. |
+| **`add`** | `add [val]` | Pops the top item off the **stack**. Adds it to `<val>` (or pops a second item off the stack if no `<val>` is given). Holds result in `last_val`. |
+| **`sub`** | `sub [val]` | Pops the top item off the **stack** and subtracts `<val>` (or a second popped item). Holds result in `last_val`. |
+| **`mult`** | `mult [val]` | Pops the top item off the **stack** and multiplies it by `<val>` (or a second popped item). Holds result in `last_val`. |
+| **`ifeq`** | `ifeq <key> <val>` | Looks at a value in the **heap**. If it **does not equal** `<val>`, execution skips the rest of the current line. |
+| **`ifgt`** | `ifgt <key> <val>` | Looks at a value in the **heap**. If it **is <=** `<val>`, execution skips the rest of the current line. |
+| **`jump`** | `jump <label>` | Jumps execution directly to `label <label>`. |
+| **`draw`** | `draw <key> <width>` | Clears the screen, takes a string/list from the **heap**, and prints it as a 2D grid wrapped at `<width>`. |
+| **`input`** | `input` | Prompts the user with `Move (wasd): `, converts it to lowercase, and holds it in `last_val`. |
+| **`print`** | `print [val]` | Prints `<val>`. If no `<val>` is provided, it pops and prints the top item of the **stack**. |
+
+---
+
+### Example
+
+If you want to add `1` to a variable named `points`, here is how it would behave:
+
+```assembly
+get points | >> | push int 1 | add | >> | save points
+
+```
+
+1. `get points`: Looks up "points" in the **heap** and holds it in `last_val`.
+2. `>>`: Pushes that `last_val` onto the **stack**.
+3. `push int 1`: Pushes the integer `1` onto the **stack**.
+4. `add`: Pops both items off the **stack**, adds them, and holds the new total in `last_val`.
+5. `>>`: Pushes that new total back onto the **stack**.
+6. `save points`: Pops the top item off the **stack** and saves it back into the **heap** as "points".

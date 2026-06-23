@@ -17,7 +17,7 @@ python ksmc.py your_script.ksm
 
 | Command | Syntax | How it works |
 | --- | --- | --- |
-| **`>>`** | <code>... &#124; >> &#124; ...<code> | Takes the most recently generated result (`last_val`) and pushes it onto the **stack**. |
+| **`>>`** | <code>... &#124; >><code> | Takes the most recently generated result (`last_val`) and pushes it onto the **stack**. |
 | **`push`** | `push <type> <val>` | Converts `<val>` to the requested type (`str`, `int`, `float`, `list`) and places it on top of the **stack**. |
 | **`save`** | `save <key>` | Removes the top item from the **stack** and saves it permanently in the **heap** under the name `<key>`. |
 | **`store`** | `store <key>=<val>` | Directly saves `<val>` into the **heap** without using the stack. (Auto-detects integers). |

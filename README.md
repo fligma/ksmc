@@ -1,7 +1,5 @@
 KSM is an assembly-like, scripting language. (NOT EVEN CLOSE TO BEING DONE)
 
----
-
 1. Ensure your script file ends with `.ksm` and has `.ksm` as its **very first line**.
 2. Run the script using the Python interpreter:
 
@@ -13,7 +11,6 @@ python ksmc.py your_script.ksm
 ---
 
 ## Command Reference
----
 
 | Command | Syntax | How it works |
 | --- | --- | --- |

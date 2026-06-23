@@ -41,7 +41,7 @@ label main
 draw grid 11
 print Points:
 get points | >> | print
-print Controls: w(up) s(down) a(left) d(right) q(quit)
+print Controls:_w(up)_s(down)_a(left)_d(right)_q(quit)
 input | >> | save cmd
 
 ifeq cmd q | jump end_game
@@ -117,6 +117,8 @@ get npcol | >> | save pcol
 jump main
 
 label end_game
-print Final score:
+print ------------
+print Final_score:
 get points | >> | print
-print Thanks for playing!
+print ------------
+print Thanks_for_playing!

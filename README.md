@@ -2,7 +2,7 @@ KSM is an assembly-like, scripting language. (NOT EVEN CLOSE TO BEING DONE)
 
 Ensure your script file ends with `.ksm` and has `.ksm` as its **very first line**.
 
-Run the script using the Python interpreter:
+Run the script using the Python interpreter: (or compile and run like ./ksmc your_script.ksm)
 ```bash
 python ksmc.py your_script.ksm
 

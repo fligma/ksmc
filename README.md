@@ -17,7 +17,7 @@ python ksmc.py your_script.ksm
 
 | Command | Syntax | How it works |
 | --- | --- | --- |
-| **`>>`** | "... | >>" | Takes the most recently generated result (`last_val`) and pushes it onto the **stack**. |
+| **`>>`** | <code>... &#124; >> &#124; ...<code> | Takes the most recently generated result (`last_val`) and pushes it onto the **stack**. |
 | **`push`** | `push <type> <val>` | Converts `<val>` to the requested type (`str`, `int`, `float`, `list`) and places it on top of the **stack**. |
 | **`save`** | `save <key>` | Removes the top item from the **stack** and saves it permanently in the **heap** under the name `<key>`. |
 | **`store`** | `store <key>=<val>` | Directly saves `<val>` into the **heap** without using the stack. (Auto-detects integers). |
@@ -32,23 +32,7 @@ python ksmc.py your_script.ksm
 | **`ifgt`** | `ifgt <key> <val>` | Looks at a value in the **heap**. If it **is <=** `<val>`, execution skips the rest of the current line. |
 | **`jump`** | `jump <label>` | Jumps execution directly to `label <label>`. |
 | **`draw`** | `draw <key> <width>` | Clears the screen, takes a string/list from the **heap**, and prints it as a 2D grid wrapped at `<width>`. |
-| **`input`** | `input` | Prompts the user with `Move (wasd): `, converts it to lowercase, and holds it in `last_val`. |
+| **`input`** | `input [prompt]` | Pauses for user input. Displays `[prompt]` if provided; otherwise defaults to `input: `. Converts input to lowercase and holds it in `last_val`. |
 | **`print`** | `print [val]` | Prints `<val>`. If no `<val>` is provided, it pops and prints the top item of the **stack**. |
 
 ---
-
-### Example
-
-If you want to add `1` to a variable named `points`, here is how it would behave:
-
-```assembly
-get points | >> | push int 1 | add | >> | save points
-
-```
-
-1. `get points`: Looks up "points" in the **heap** and holds it in `last_val`.
-2. `>>`: Pushes that `last_val` onto the **stack**.
-3. `push int 1`: Pushes the integer `1` onto the **stack**.
-4. `add`: Pops both items off the **stack**, adds them, and holds the new total in `last_val`.
-5. `>>`: Pushes that new total back onto the **stack**.
-6. `save points`: Pops the top item off the **stack** and saves it back into the **heap** as "points".

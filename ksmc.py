@@ -150,7 +150,8 @@ def exe(file):
                 for i in range(0, len(lst), width):
                     print(" ".join(lst[i:i+width]))
             elif cmd == 'get': last_val = store.heap.getkey(l[1])
-            elif cmd == 'input': last_val = input("Move (wasd): ").lower()
+            elif cmd == 'input': 
+                last_val = input(l[1] if len(l) > 1 else "input: ").lower()
             elif cmd == 'print': print(l[1] if len(l) > 1 else store.stack.pop())
             elif cmd == 'jump': store.pointer = store.labels[l[1]]
             elif cmd == 'ifeq':

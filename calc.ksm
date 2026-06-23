@@ -1,0 +1,43 @@
+.ksm
+print -------(q_to_exit)--------
+label calculator_start
+print --------------------------
+
+print Enter_First_Number:
+input num1: | >> | save num1
+ifeq num1 q | jump exit_calc
+
+print Enter_Operation_(a=add_s=sub_m=mult):
+input op: | >> | save op
+
+ifeq op q | jump exit_calc
+
+print Enter_Second_Number:
+input num2: | >> | save num2
+ifeq num2 q | jump exit_calc
+
+get num2 | >>
+get num1 | >>
+
+ifeq op a | jump do_add
+ifeq op s | jump do_sub
+ifeq op m | jump do_mult
+ifeq op q | jump exit_calc
+
+print Invalid_operation_selected!
+jump calculator_start
+
+label do_add
+add | >> | print
+jump calculator_start
+
+label do_sub
+sub | >> | print
+jump calculator_start
+
+label do_mult
+mult | >> | print
+jump calculator_start
+
+label exit_calc
+print Goodbye!

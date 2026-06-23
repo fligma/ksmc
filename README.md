@@ -1,4 +1,4 @@
-KSM is an assembly-like, scripting language.
+KSM is an assembly-like, scripting language. (NOT EVEN CLOSE TO BEING DONE)
 
 ---
 

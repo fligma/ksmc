@@ -87,7 +87,7 @@ class exestore:
     def __init__(self):
         self.pointer = 0; self.exemem = []; self.labels = {}
         self.heap = kheap(); self.stack = kstack()
-        self.call_stack = [] # New call stack for subroutines
+        self.call_stack = []
 
 def exe(file):
     store = exestore()

@@ -50,6 +50,4 @@ Commands can be chained on a single line using the pipe (`|`) delimiter. Executi
 * Any line starting with `#` is classified as a comment and skipped entirely.
 * Empty lines are completely ignored.
 
-```
-
-```
+---

@@ -1,0 +1,331 @@
+.ksm
+# BlockJump - Simple Geometry Dash Clone
+
+cls
+print "=============================="
+print "      BLOCK JUMP"
+print "=============================="
+print ""
+print "Jump over the obstacles!"
+print "Controls: SPACE or W = Jump"
+print ""
+
+mut player_y 0
+mut velocity 0
+mut is_jumping false
+mut score 0
+mut is_alive true
+mut game_frame 0
+mut level []
+
+mut row 0
+mut current_col 0
+mut draw_char " "
+mut world_x 0
+mut obs 0
+mut player_row 0
+mut key_input " "
+mut choice 0
+mut gi 0
+mut i 0
+mut frame_buffer ""
+
+label main_menu
+
+push []
+save level
+
+push 0
+save i
+while i < 50
+append level 0
+get i
+push 1
+add
+save i
+endwhile
+
+cls
+print "=============================="
+print "      LEVEL SELECT"
+print "=============================="
+print "Choose level (1-3):"
+try
+input ""
+save choice
+get choice
+cast int
+save choice
+catch err
+push 1
+save choice
+endtry
+
+if choice == 1
+jump load_level_1
+if choice == 2
+jump load_level_2
+if choice == 3
+jump load_level_3
+
+jump load_level_1
+
+label load_level_1
+setidx level 10 1
+setidx level 20 1
+setidx level 21 1
+setidx level 30 1
+setidx level 35 1
+setidx level 36 1
+setidx level 45 1
+jump start_game
+
+label load_level_2
+setidx level 8 1
+setidx level 15 1
+setidx level 16 1
+setidx level 22 1
+setidx level 23 1
+setidx level 24 1
+setidx level 30 1
+setidx level 31 1
+setidx level 38 1
+setidx level 39 1
+setidx level 40 1
+setidx level 46 1
+setidx level 47 1
+jump start_game
+
+label load_level_3
+setidx level 5 1
+setidx level 6 1
+setidx level 12 1
+setidx level 18 1
+setidx level 19 1
+setidx level 25 1
+setidx level 26 1
+setidx level 27 1
+setidx level 33 1
+setidx level 34 1
+setidx level 40 1
+setidx level 41 1
+setidx level 42 1
+setidx level 48 1
+setidx level 49 1
+jump start_game
+
+label start_game
+push 0
+save player_y
+push 0
+save velocity
+push false
+save is_jumping
+push 0
+save score
+push true
+save is_alive
+push 0
+save game_frame
+
+cls
+print "Get Ready!"
+sleep 1000
+
+label main_loop
+if is_alive == false
+jump game_over
+
+if game_frame >= 50
+jump level_complete
+
+key
+save key_input
+
+if is_jumping == true
+jump apply_physics
+
+if key_input == " "
+jump do_jump
+if key_input == "w"
+jump do_jump
+if key_input == "W"
+jump do_jump
+jump apply_physics
+
+label do_jump
+push true
+save is_jumping
+push 3
+save velocity
+
+label apply_physics
+get velocity
+push 1
+sub
+save velocity
+
+get player_y
+get velocity
+add
+save player_y
+
+if player_y > 0
+jump check_collision
+
+push 0
+save player_y
+push 0
+save velocity
+push false
+save is_jumping
+
+label check_collision
+idx level game_frame
+save obs
+
+if obs != 1
+jump update_score
+
+if player_y >= 2
+jump update_score
+
+push false
+save is_alive
+
+label update_score
+get score
+push 1
+add
+save score
+
+push "BLOCK JUMP  Score: "
+get score
+cast str
+add
+push "\n\n"
+add
+save frame_buffer
+
+push 7
+get player_y
+sub
+save player_row
+
+push 0
+save row
+while row < 8
+   push 0
+   save current_col
+   while current_col < 40
+      push " "
+      save draw_char
+      
+      if current_col != 5
+      jump check_obs
+      if row != player_row
+      jump check_obs
+      push "O"
+      save draw_char
+      jump append_char
+      
+      label check_obs
+      if row < 6
+      jump append_char
+      
+      get game_frame
+      get current_col
+      add
+      push 5
+      sub
+      save world_x
+      
+      if world_x < 0
+      jump append_char
+      if world_x >= 50
+      jump append_char
+      
+      idx level world_x
+      save obs
+      if obs != 1
+      jump append_char
+      push "#"
+      save draw_char
+      
+      label append_char
+      get frame_buffer
+      get draw_char
+      add
+      save frame_buffer
+      
+      get current_col
+      push 1
+      add
+      save current_col
+   endwhile
+   
+   get frame_buffer
+   push "\n"
+   add
+   save frame_buffer
+   
+   get row
+   push 1
+   add
+   save row
+endwhile
+
+get frame_buffer
+push "-"
+push 40
+sys.str repeat
+add
+push "\n"
+add
+save frame_buffer
+
+cls
+get frame_buffer
+print
+
+get game_frame
+push 1
+add
+save game_frame
+
+sleep 40
+jump main_loop
+
+label game_over
+cls
+print "=============================="
+print "      GAME OVER!"
+print "=============================="
+print ""
+print "Score:"
+get score
+print
+print ""
+print "Return to menu? (y/n)"
+input ""
+save choice
+if choice == "y"
+jump main_menu
+exit 0
+
+label level_complete
+cls
+print "=============================="
+print "   LEVEL COMPLETE!"
+print "=============================="
+print ""
+print "Score:"
+get score
+print
+print ""
+print "Play another level? (y/n)"
+input ""
+save choice
+if choice == "y"
+jump main_menu
+exit 0

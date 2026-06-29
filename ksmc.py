@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Fligma
 """
 KSMC - KSM Compiler/Interpreter v4
 A strict, stack-based assembly language with Forth-like semantics.

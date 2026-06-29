@@ -1,0 +1,244 @@
+.ksm
+print "=== KSMC v4 Test Suite ==="
+print "Imports, Error Handling, Syscall Bridge"
+
+print " "
+print "--- 1. Import System ---"
+use "stdlib.ksm"
+
+push 7
+double
+save d1
+print "imported double(7) ="
+get d1
+print
+
+push 6
+square
+save s1
+print "imported square(6) ="
+get s1
+print
+
+push 10
+push 3
+abs_diff
+save ad
+print "imported abs_diff(10, 3) ="
+get ad
+print
+
+push 4
+is_even
+save ev
+print "imported is_even(4) ="
+get ev
+print
+
+push 7
+is_even
+save ev2
+print "imported is_even(7) ="
+get ev2
+print
+
+push 15
+push 0
+push 10
+clamp
+save cl
+print "imported clamp(15, 0, 10) ="
+get cl
+print
+
+push -3
+negate
+save ng
+print "imported negate(-3) ="
+get ng
+print
+
+print " "
+print "--- 2. Error Handling ---"
+
+# Test 1: catch thrown error
+try
+push "UserError 42"
+throw
+print "FAIL: should not reach here"
+catch _err
+print "Caught error:"
+get _err
+print
+endtry
+
+# Test 2: catch runtime error
+try
+push 10
+push 0
+div
+save div_result
+print "FAIL: should have caught div by zero"
+catch _err2
+print "Caught div by zero:"
+get _err2
+print
+endtry
+
+# Test 3: no error path
+try
+push "All good"
+save status
+print "No error path:"
+get status
+print
+catch _err3
+print "SKIP: catch not reached"
+endtry
+
+# Test 4: conditional throw
+mut ct_val 99
+try
+get ct_val
+push 100
+save ct_cmp
+if ct_cmp >= 100
+throw "Value too high!"
+end
+print "Conditional throw: passed"
+catch _err4
+print "Conditional throw caught:"
+get _err4
+print
+endtry
+
+print " "
+print "--- 3. Syscall: sys.json ---"
+push {"name": "KSM", "ver": 4}
+sys.json encode
+save json_str
+print "JSON encode:"
+get json_str
+print
+
+get json_str
+sys.json decode
+save json_data
+print "JSON decode -> name:"
+idx json_data "name"
+print
+
+print " "
+print "--- 4. Syscall: sys.re ---"
+push "hello world"
+push "w\w+"
+sys.re find
+save re_match
+print "Regex find:"
+get re_match
+print
+
+push "abc123def456"
+push "[0-9]+"
+sys.re findall
+save re_all
+print "Regex findall:"
+get re_all
+print
+
+push "foo bar baz"
+push " "
+sys.re split
+save re_split
+print "Regex split:"
+get re_split
+print
+
+push "The year is 2025"
+push "[0-9]{4}"
+push "2026"
+sys.re replace
+save re_rep
+print "Regex replace:"
+get re_rep
+print
+
+print " "
+print "--- 5. Syscall: sys.math ---"
+sys.math pi
+save pi_val
+print "sys.math pi ="
+get pi_val
+print
+
+push 2
+sys.math sqrt
+save sqrt2
+print "sqrt(2) ="
+get sqrt2
+print
+
+push 3.7
+sys.math floor
+save fl
+print "floor(3.7) ="
+get fl
+print
+
+print " "
+print "--- 6. Syscall: sys.str ---"
+push "hello.txt"
+push ".txt"
+sys.str endswith
+save es
+print "endswith('.txt'):"
+get es
+print
+
+push "  spaced  "
+sys.str trim
+save tr
+print "trim result:"
+get tr
+print
+
+push "hello world"
+push "world"
+sys.str contains
+save ct
+print "contains 'world':"
+get ct
+print
+
+print " "
+print "--- 7. Syscall: sys.os ---"
+sys.os cwd
+save cwd
+print "sys.os cwd:"
+get cwd
+print
+
+sys.os exists "."
+save exists_dot
+print "sys.os exists('.'): "
+get exists_dot
+print
+
+print " "
+print "--- 8. Has (key check) ---"
+push {"key1": "val1", "key2": 42}
+mut mydict
+has mydict "key1"
+save h1
+print "has mydict 'key1':"
+get h1
+print
+
+has mydict "missing"
+save h2
+print "has mydict 'missing':"
+get h2
+print
+
+print " "
+print "=== All Tests Complete ==="

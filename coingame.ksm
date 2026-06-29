@@ -1,124 +1,141 @@
 .ksm
+# Coin Collection Game
+# Move with w/a/s/d, collect coins ($), reach the exit (E)
 
-store width=11
-store height=11
-store total=121
-store points=0
-store count=0
+cls
+print "=== Coin Game ==="
+print "Move: w/a/s/d | Collect $ | Reach E"
+print ""
 
-push str # | push int 121 | mult | >> | save grid
+# Build 15x8 grid
+push "#"
+push 120
+repeat
+save grid
 
-store count=0
-label carve_loop
-ifgt count 200 | jump carve_done
-rand 0 120 | >> | save pos
-index grid pos | >> | save cell
-ifeq cell # | set grid pos .
-get count | >> | push int 1 | add | >> | save count
-jump carve_loop
-label carve_done
+mut score 0
+mut player 48
 
-store count=0
-label coin_loop
-ifgt count 50 | jump coin_done
-rand 0 120 | >> | save pos
-index grid pos | >> | save cell
-ifeq cell . | set grid pos o
-get count | >> | push int 1 | add | >> | save count
-jump coin_loop
-label coin_done
-
-label find_player
-rand 0 10 | >> | save prow
-rand 0 10 | >> | save pcol
-get prow | >> | push int 11 | mult | >> | get pcol | >> | add | >> | save player
-index grid player | >> | save cell
-ifeq cell . | set grid player P | jump start_game
-jump find_player
-
-label start_game
 label main
-draw grid 11
-print Points:
-get points | >> | print
-print Controls:_w(up)_s(down)_a(left)_d(right)_q(quit)
-input | >> | save cmd
+# Draw grid
+get grid
+push 15
+draw
 
-ifeq cmd q | jump end_game
+# Show score
+print ""
+print "Score: 0"
+get score
+print
 
-ifeq cmd w | jump try_up
-ifeq cmd s | jump try_down
-ifeq cmd a | jump try_left
-ifeq cmd d | jump try_right
+# Check if player is on exit
+get grid
+get player
+idx
+save cell
+if cell == "E"
+print "You win!"
+exit 0
+end
+
+# Check if player is on coin
+get grid
+get player
+idx
+save cell
+if cell == "$"
+get score
+push 1
+add
+save score
+# Replace coin with floor
+get grid
+get player
+setidx "."
+end
+
+# Place player on grid
+get grid
+get player
+setidx "P"
+
+# Read input
+key
+save move
+
+# Move player
+if move == "w"
+get player
+push -15
+add
+save player
+end
+
+if move == "s"
+get player
+push 15
+add
+save player
+end
+
+if move == "a"
+get player
+push -1
+add
+save player
+end
+
+if move == "d"
+get player
+push 1
+add
+save player
+end
+
+# Bounds check - reset if out of bounds
+if player < 0
+push 48
+save player
+end
+
+if player > 119
+push 48
+save player
+end
+
+# Walls - bounce back
+get grid
+get player
+idx
+save wall
+if wall == "#"
+get player
+if move == "w"
+push 15
+add
+save player
+end
+if move == "s"
+push -15
+add
+save player
+end
+if move == "a"
+push 1
+add
+save player
+end
+if move == "d"
+push -1
+add
+save player
+end
+end
+
+# Place player on grid for display
+get grid
+get player
+setidx "P"
+
+sleep 100
 jump main
-
-label try_up
-ifgt prow 0 | jump do_up
-jump main
-
-label do_up
-push int 1 | get prow | >> | sub | >> | save nprow
-get nprow | >> | push int 11 | mult | >> | get pcol | >> | add | >> | save target
-index grid target | >> | save cell
-ifeq cell # | jump main
-ifeq cell o | get points | >> | push int 1 | add | >> | save points
-get player | >> | set grid player .
-get target | >> | set grid target P
-get target | >> | save player
-get nprow | >> | save prow
-jump main
-
-label try_down
-ifeq prow 10 | jump main
-jump do_down
-
-label do_down
-get prow | >> | push int 1 | add | >> | save nprow
-get nprow | >> | push int 11 | mult | >> | get pcol | >> | add | >> | save target
-index grid target | >> | save cell
-ifeq cell # | jump main
-ifeq cell o | get points | >> | push int 1 | add | >> | save points
-get player | >> | set grid player .
-get target | >> | set grid target P
-get target | >> | save player
-get nprow | >> | save prow
-jump main
-
-label try_left
-ifgt pcol 0 | jump do_left
-jump main
-
-label do_left
-push int 1 | get pcol | >> | sub | >> | save npcol
-get prow | >> | push int 11 | mult | >> | get npcol | >> | add | >> | save target
-index grid target | >> | save cell
-ifeq cell # | jump main
-ifeq cell o | get points | >> | push int 1 | add | >> | save points
-get player | >> | set grid player .
-get target | >> | set grid target P
-get target | >> | save player
-get npcol | >> | save pcol
-jump main
-
-label try_right
-ifeq pcol 10 | jump main
-jump do_right
-
-label do_right
-get pcol | >> | push int 1 | add | >> | save npcol
-get prow | >> | push int 11 | mult | >> | get npcol | >> | add | >> | save target
-index grid target | >> | save cell
-ifeq cell # | jump main
-ifeq cell o | get points | >> | push int 1 | add | >> | save points
-get player | >> | set grid player .
-get target | >> | set grid target P
-get target | >> | save player
-get npcol | >> | save pcol
-jump main
-
-label end_game
-print ------------
-print Final_score:
-get points | >> | print
-print ------------
-print Thanks_for_playing!

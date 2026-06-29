@@ -1,0 +1,86 @@
+.ksm
+# KSMC Standard Library
+# Import with: use "stdlib.ksm"
+
+# double - multiply top of stack by 2
+def double
+dup
+add
+end
+
+# square - square the top of stack
+def square
+dup
+mul
+end
+
+# abs_diff - absolute difference of two stack values (a b -> |a-b|)
+def abs_diff
+sub
+abs
+end
+
+# is_even - top of stack is int -> push true if even, false if odd
+def is_even
+save _iev_v
+get _iev_v
+push 2
+mod
+push 0
+eq
+end
+
+# clamp - clamp value between lo and hi (stack: val lo hi -> clamped)
+def clamp
+save _c_hi
+save _c_lo
+save _c_val
+get _c_val
+get _c_lo
+max
+save _c_val
+get _c_val
+get _c_hi
+min
+end
+
+# negate - negate the top of stack value
+def negate
+push -1
+mul
+end
+
+# swap2 - swap top 4 elements (a b c d -> c d a b)
+def swap2
+rot
+swap
+rot
+end
+
+# tuck - (a b -> b a b)
+def tuck
+swap
+over
+end
+
+# 2dup - duplicate top 2 elements
+def 2dup
+over
+over
+end
+
+# min3 - minimum of top 3 stack values
+def min3
+rot
+min
+swap
+min
+end
+
+# max3 - maximum of top 3 stack values
+def max3
+rot
+max
+swap
+max
+end

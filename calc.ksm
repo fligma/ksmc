@@ -1,43 +1,84 @@
 .ksm
-print -------(q_to_exit)--------
-label calculator_start
-print --------------------------
+# Simple Calculator
+print "=== KSMC Calculator ==="
+print "Enter two numbers and an operation"
+print "Operations: a(dd) s(ub) m(ul) d(iv)"
+print ""
 
-print Enter_First_Number:
-input num1: | >> | save num1
-ifeq num1 q | jump exit_calc
+input "First number: "
+save num1
+get num1
+cast int
+save num1
 
-print Enter_Operation_(a=add_s=sub_m=mult):
-input op: | >> | save op
+input "Second number: "
+save num2
+get num2
+cast int
+save num2
 
-ifeq op q | jump exit_calc
+input "Operation (a/s/m/d): "
+save op
 
-print Enter_Second_Number:
-input num2: | >> | save num2
-ifeq num2 q | jump exit_calc
+# Addition
+if op == "a"
+jump do_add
+end
 
-get num2 | >>
-get num1 | >>
+# Subtraction
+if op == "s"
+jump do_sub
+end
 
-ifeq op a | jump do_add
-ifeq op s | jump do_sub
-ifeq op m | jump do_mult
-ifeq op q | jump exit_calc
+# Multiplication
+if op == "m"
+jump do_mul
+end
 
-print Invalid_operation_selected!
-jump calculator_start
+# Division
+if op == "d"
+jump do_div
+end
+
+print "Unknown operation!"
+exit 1
 
 label do_add
-add | >> | print
-jump calculator_start
+get num1
+get num2
+add
+save result
+print "Result:"
+get result
+print
+exit 0
 
 label do_sub
-sub | >> | print
-jump calculator_start
+get num1
+get num2
+sub
+save result
+print "Result:"
+get result
+print
+exit 0
 
-label do_mult
-mult | >> | print
-jump calculator_start
+label do_mul
+get num1
+get num2
+mul
+save result
+print "Result:"
+get result
+print
+exit 0
 
-label exit_calc
-print Goodbye!
+label do_div
+get num1
+get num2
+div
+save result
+print "Result:"
+get result
+print
+exit 0

@@ -64,7 +64,7 @@ All arithmetic is **strict**: numeric types only (int/float). Int + float auto-w
 | `mod` | `a b -> a%b` | Modulo |
 | `pow` | `a b -> a^b` | Power |
 | `neg` | `a -> -a` | Negate |
-| `abs` | `a -> |a|` | Absolute value |
+| `abs` | `a -> \|a\|` | Absolute value |
 | `min` | `a b -> min` | Minimum |
 | `max` | `a b -> max` | Maximum |
 | `rand` | `lo hi -> r` | Random int in [lo, hi] |
@@ -76,7 +76,7 @@ Strict: **int only**.
 | Op | Stack Effect | Description |
 |----|-------------|-------------|
 | `band` | `a b -> a&b` | Bitwise AND |
-| `bor` | `a b -> a|b` | Bitwise OR |
+| `bor` | `a b -> a\|b` | Bitwise OR |
 | `bxor` | `a b -> a^b` | Bitwise XOR |
 | `bnot` | `a -> ~a` | Bitwise NOT |
 | `shl` | `a b -> a<<b` | Left shift |
